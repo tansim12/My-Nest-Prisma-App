@@ -7,9 +7,9 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
-import { UpdateSongDto } from './dto/update-song.dto';
 import { Prisma } from '@prisma/client';
 
 @Controller('songs')
@@ -22,22 +22,25 @@ export class SongsController {
   }
 
   @Get()
-  findAll() {
-    return this.songsService.findAll();
+  findAll(@Query() query: any) {
+    return this.songsService.findAll(query);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.songsService.findOne(+id);
+    return this.songsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSongDto: UpdateSongDto) {
-    return this.songsService.update(+id, updateSongDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateSongDto: Prisma.SongUpdateInput,
+  ) {
+    return this.songsService.update(id, updateSongDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.songsService.remove(+id);
+    return this.songsService.remove(id);
   }
 }
