@@ -8,6 +8,9 @@ export class SongsService {
   create(createSongDto: Prisma.SongCreateInput) {
     const result = this.prisma.song.create({
       data: createSongDto,
+      include: {
+        artist: true,
+      },
     });
     return result;
   }
@@ -15,7 +18,7 @@ export class SongsService {
   findAll(query: any) {
     console.log(query);
 
-    const result = this.prisma.song.findMany();
+    const result = this.prisma.song.findMany({ include: { artist: true } });
     return result;
   }
 
