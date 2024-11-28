@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
+import { PrismaService } from 'src/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class SongsService {
-  create(createSongDto: CreateSongDto) {
-    return 'This action adds a new song';
+  constructor(private prisma: PrismaService) {}
+  async create(createSongDto: Prisma.SongCreateInput) {
+    return await this.prisma.song.create({
+      data: createSongDto,
+    });
   }
 
   findAll() {
