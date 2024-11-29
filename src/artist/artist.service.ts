@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-
-import { UpdateArtistDto } from './dto/update-artist.dto';
 import { PrismaService } from 'src/prisma.service';
 import { Prisma } from '@prisma/client';
 
@@ -20,15 +18,27 @@ export class ArtistService {
     return this.prisma.artist.findMany({ include: { song: true } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} artist`;
+  findOne(id: string) {
+    return this.prisma.artist.findUniqueOrThrow({
+      where: { id },
+      include: {
+        song: true,
+      },
+    });
   }
 
-  update(id: number, updateArtistDto: UpdateArtistDto) {
-    return `This action updates a #${id} artist`;
+  update(id: string, updateArtistDto: Prisma.ArtistUpdateInput) {
+    return this.prisma.artist.update({
+      where: {
+        id,
+      },
+      data: updateArtistDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} artist`;
+  remove(id: string) {
+    return this.prisma.artist.delete({
+      where: { id },
+    });
   }
 }

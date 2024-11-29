@@ -9,7 +9,6 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
-import { UpdateArtistDto } from './dto/update-artist.dto';
 import { Prisma } from '@prisma/client';
 
 @Controller('artist')
@@ -28,16 +27,19 @@ export class ArtistController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.artistService.findOne(+id);
+    return this.artistService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateArtistDto: UpdateArtistDto) {
-    return this.artistService.update(+id, updateArtistDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateArtistDto: Prisma.ArtistUpdateInput,
+  ) {
+    return this.artistService.update(id, updateArtistDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.artistService.remove(+id);
+    return this.artistService.remove(id);
   }
 }
