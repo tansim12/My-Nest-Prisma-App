@@ -24,4 +24,12 @@ model Artist {
   id    String    @id @default(uuid())
   name  String
   song  Song[]
+  profile Profile?
+}
+
+model Profile {
+  id String @id @default(uuid())
+  profilePhoto String?
+  artistId  String @unique
+  artist Artist @relation(fields: [artistId],references: [id]) 
 }

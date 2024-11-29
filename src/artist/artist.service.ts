@@ -6,16 +6,36 @@ import { Prisma } from '@prisma/client';
 export class ArtistService {
   constructor(private prisma: PrismaService) {}
   create(createArtistDto: Prisma.ArtistCreateInput) {
-    return this.prisma.artist.create({
-      data: createArtistDto,
-      include: {
-        song: true,
-      },
+    const result = this.prisma.$transaction(async (tx) => {
+      const artistData = await tx.artist.create({
+        data: createArtistDto,
+        include: {
+          profile: true,
+          song: true,
+        },
+      });
+      await tx.profile.create({
+        data: {
+          artistId: artistData.id,
+        },
+      });
+      return tx.artist.findUnique({
+        where: {
+          id: artistData.id,
+        },
+        include: {
+          song: true,
+          profile: true,
+        },
+      });
     });
+    return result;
   }
 
   findAll() {
-    return this.prisma.artist.findMany({ include: { song: true } });
+    return this.prisma.artist.findMany({
+      include: { song: true, profile: true },
+    });
   }
 
   findOne(id: string) {
