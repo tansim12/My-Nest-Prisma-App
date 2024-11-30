@@ -25,6 +25,7 @@ export class ArtistController {
   }
 
   @Get()
+  //!  using req res next such as express.js
   async findAll(@Req() req: Request, @Res() res: Response) {
     try {
       const result = await this.artistService.findAll();
@@ -52,7 +53,7 @@ export class ArtistController {
     return this.artistService.remove(id);
   }
 
-  // wildCard Route
+  //! wildCard Route
   @Get('ab*cd/:id')
   async getAllArtists(@Res() res: Response) {
     try {
