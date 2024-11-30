@@ -8,6 +8,7 @@ import {
   Param,
   Delete,
   Inject,
+  Optional,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -17,7 +18,9 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UserController {
   constructor(
     //! implement inject by provide name and useClass is different
-    @Inject('UserService') private readonly userService: UserService,
+    @Optional() // its optional module.ts এ যদি নিচের provider না ও থাকে তাও কোনও error দিবে না
+    @Inject('UserService')
+    private readonly userService: UserService,
   ) {}
 
   @Post()
