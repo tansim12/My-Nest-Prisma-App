@@ -24,7 +24,7 @@ export class ArtistController {
     return this.artistService.create(createArtistDto);
   }
 
-  @Get()
+  @Get('/all')
   //!  using req res next such as express.js
   async findAll(@Req() req: Request, @Res() res: Response) {
     try {
