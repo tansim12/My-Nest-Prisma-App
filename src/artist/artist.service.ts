@@ -38,6 +38,20 @@ export class ArtistService {
     });
   }
 
+  async wildCardDB() {
+    console.log(23424);
+    try {
+      const artists = await this.prisma.artist.findMany({
+        include: { song: true, profile: true },
+      });
+      console.log(artists); // Debugging output
+      return artists;
+    } catch (error) {
+      console.error(error); // Log any Prisma-related errors
+      throw new Error('Failed to fetch artists');
+    }
+  }
+
   findOne(id: string) {
     return this.prisma.artist.findUniqueOrThrow({
       where: { id },
