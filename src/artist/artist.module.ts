@@ -7,7 +7,7 @@ import {
 import { ArtistService } from './artist.service';
 import { ArtistController } from './artist.controller';
 import { PrismaService } from 'src/prisma.service';
-import { SimpleMiddlewareMiddleware } from 'src/common/middleware/simple-middleware/simple-middleware.middleware';
+import { SimpleMiddlewareMiddleware } from 'src/common/middleware/simple-middleware.middleware';
 
 @Module({
   controllers: [ArtistController],
@@ -15,9 +15,12 @@ import { SimpleMiddlewareMiddleware } from 'src/common/middleware/simple-middlew
 })
 export class ArtistModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(SimpleMiddlewareMiddleware).forRoutes({
-      path: 'artist/all',
-      method: RequestMethod.GET,
-    });
+    consumer.apply(SimpleMiddlewareMiddleware).forRoutes(
+      {
+        path: 'artist/all',
+        method: RequestMethod.GET,
+      },
+      'artist/(.*)',
+    );
   }
 }

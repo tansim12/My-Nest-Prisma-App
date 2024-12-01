@@ -27,7 +27,7 @@ export class ArtistController {
   @Get('/all')
   //!  using req res next such as express.js
   async findAll(@Req() req: Request, @Res() res: Response) {
-    console.log(req['ua']);
+    console.log(req?.['ua']);
 
     try {
       const result = await this.artistService.findAll();
