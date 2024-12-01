@@ -11,16 +11,20 @@ import {
   Res,
   HttpStatus,
   HttpException,
+  UsePipes,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { Prisma } from '@prisma/client';
 import { Request, Response } from 'express';
+import { CreateArtistDto, createArtistSchema } from './dto/create-artist.dto';
+import { ZodValidationPipe } from 'src/common/middleware/ZodValidationPipe.middleware';
 @Controller('artist')
 export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   @Post()
-  create(@Body() createArtistDto: Prisma.ArtistCreateInput) {
+  @UsePipes(new ZodValidationPipe(createArtistSchema))
+  create(@Body() createArtistDto: CreateArtistDto) {
     return this.artistService.create(createArtistDto);
   }
 

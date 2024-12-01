@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Prisma } from '@prisma/client';
+import { CreateArtistDto } from './dto/create-artist.dto';
 
 @Injectable()
 export class ArtistService {
   constructor(private prisma: PrismaService) {}
-  create(createArtistDto: Prisma.ArtistCreateInput) {
+  create(createArtistDto: CreateArtistDto) {
     const result = this.prisma.$transaction(async (tx) => {
       const artistData = await tx.artist.create({
-        data: createArtistDto,
+        data: createArtistDto as any,
         include: {
           profile: true,
           song: true,
